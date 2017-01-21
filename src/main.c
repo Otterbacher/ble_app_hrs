@@ -51,8 +51,8 @@
 
 #define IS_SRVC_CHANGED_CHARACT_PRESENT  1                                           /**< Include or not the service_changed characteristic. if not enabled, the server's database cannot be changed for the lifetime of the device*/
 
-#define DEVICE_NAME                      "Test_HRM13"                                /**< Name of device. Will be included in the advertising data. */
-#define MANUFACTURER_NAME                "TestManufacturer"                       /**< Manufacturer. Will be passed to Device Information Service. */
+#define DEVICE_NAME                      "DeviceName_13"                                /**< Name of device. Will be included in the advertising data. */
+#define MANUFACTURER_NAME                "Manufacturer"                       /**< Manufacturer. Will be passed to Device Information Service. */
 #define APP_ADV_INTERVAL                 300                                         /**< The advertising interval (in units of 0.625 ms. This value corresponds to 187.5 ms). */
 #define APP_ADV_TIMEOUT_IN_SECONDS       180                                         /**< The advertising timeout in units of seconds. */
 
@@ -119,9 +119,10 @@ APP_TIMER_DEF(m_rr_interval_timer_id);                    /**< RR interval timer
 APP_TIMER_DEF(m_sensor_contact_timer_id);                 /**< Sensor contact detected timer. */
 
 
-static ble_uuid_t m_adv_uuids[] = {{BLE_UUID_HEART_RATE_SERVICE, BLE_UUID_TYPE_BLE},
-                                   {BLE_UUID_BATTERY_SERVICE, BLE_UUID_TYPE_BLE},
-                                   {BLE_UUID_DEVICE_INFORMATION_SERVICE, BLE_UUID_TYPE_BLE}}; /**< Universally unique service identifiers. */
+static ble_uuid_t m_adv_uuids[] = {	{BLE_UUID_HEART_RATE_SERVICE, BLE_UUID_TYPE_BLE},
+									{BLE_UUID_BATTERY_SERVICE, BLE_UUID_TYPE_BLE},
+									{BLE_UUID_DEVICE_INFORMATION_SERVICE, BLE_UUID_TYPE_BLE}};
+//									{BLE_UUID_HUMAN_INTERFACE_DEVICE_SERVICE, BLE_UUID_TYPE_BLE}}; /**< Universally unique service identifiers. */
 
 /**@brief Callback function for asserts in the SoftDevice.
  *
@@ -444,7 +445,8 @@ static void gap_params_init(void)
                                           strlen(DEVICE_NAME));
     APP_ERROR_CHECK(err_code);
 
-    err_code = sd_ble_gap_appearance_set(BLE_APPEARANCE_HEART_RATE_SENSOR_HEART_RATE_BELT);
+//    err_code = sd_ble_gap_appearance_set(BLE_APPEARANCE_HEART_RATE_SENSOR_HEART_RATE_BELT);
+    err_code = sd_ble_gap_appearance_set(BLE_APPEARANCE_GENERIC_WATCH);
     APP_ERROR_CHECK(err_code);
 
     memset(&gap_conn_params, 0, sizeof(gap_conn_params));
@@ -472,7 +474,7 @@ static void services_init(void)
     uint8_t        body_sensor_location;
 
     // Initialize Heart Rate Service.
-    body_sensor_location = BLE_HRS_BODY_SENSOR_LOCATION_FINGER;
+    body_sensor_location = BLE_HRS_BODY_SENSOR_LOCATION_FOOT;
 
     memset(&hrs_init, 0, sizeof(hrs_init));
 
